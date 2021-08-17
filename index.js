@@ -84,20 +84,9 @@ hint: the strings returned need to exactly match the string in step 4.
  */
 
 function getWinnersByYear(arrData, getYearsCb, getWinnersCb) {
-    const years = getYears(arrData, getFinals);
-    const winners = getWinnersCb(arrData, getFinals);
+    const years = getYearsCb(arrData, getFinals);
+    const winnersByYear = getWinnersCb(arrData, getFinals).map((country, indx)=>`In ${years[indx]}, ${country} won the world cup!`);
 
-    const winnersByYear = years.map((elem) => elem.Year);
-
-
-    //  function getWinnersByYear() {
-    /* code here */
-    //store the result in a variable, use map with item and index, 
-    //map over winners use index to refer to the year and use item to refer to the current value in winners
-    //const str = getYearsCb(arrData)(year => `In ${year}, {country} won the world cup!`)
-    // return `In ${year}, ${country} won the world cup!`
-    //  return (console.log(getYearsCb(arrData, getWinnersCb)));
-    // const year = getYearsCb(arrData, getWinnersCb).map(elem => elem.Year);
      return winnersByYear;
 }
 console.log('Task 5:', getWinnersByYear(fifaData, getYears, getWinners));
@@ -134,12 +123,13 @@ Create a function called `getCountryWins` that takes the parameters `data` and `
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
-
+function getCountryWins(data, teamInitial) {
     /* code here */
-
+    const initialCountry = data.filter (initial => initial['Home Team Initials'] === teamInitial)
+    .reduce ((acc, curVal)=> acc + curVal['Home Team Initials'])
+return initialCountry;
 }
-
+console.log('Stretch 1:', getCountryWins(fifaData, 'ARG'));
 
 
 /* 💪💪💪💪💪 Stretch 2: 💪💪💪💪💪 
