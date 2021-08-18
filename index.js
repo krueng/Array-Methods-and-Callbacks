@@ -85,9 +85,9 @@ hint: the strings returned need to exactly match the string in step 4.
 
 function getWinnersByYear(arrData, getYearsCb, getWinnersCb) {
     const years = getYearsCb(arrData, getFinals);
-    const winnersByYear = getWinnersCb(arrData, getFinals).map((country, indx)=>`In ${years[indx]}, ${country} won the world cup!`);
+    const winnersByYear = getWinnersCb(arrData, getFinals).map((country, indx) => `In ${years[indx]}, ${country} won the world cup!`);
 
-     return winnersByYear;
+    return winnersByYear;
 }
 console.log('Task 5:', getWinnersByYear(fifaData, getYears, getWinners));
 
@@ -107,12 +107,12 @@ function getAverageGoals(arrData) {
     /* code here */
     //hint: of you want the second decimal look up .toFixed(2)
     // const getData = arrData.reduce((acc, currentVal) => acc + currentVal);
+
     const homeTeamTot = arrData.reduce((acc, currentVal) => acc + currentVal['Home Team Goals'] / arrData.length, 0);
     const awayTeamTot = arrData.reduce((acc, currentVal) => acc + currentVal['Away Team Goals'] / arrData.length, 0);
     return (homeTeamTot + awayTeamTot).toFixed(2);
 }
 console.log('Task 6:', getAverageGoals(getFinals(fifaData)));
-
 
 
 /// 🥅 STRETCH 🥅 ///
@@ -123,23 +123,33 @@ Create a function called `getCountryWins` that takes the parameters `data` and `
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(data, teamInitial) {
+function getCountryWins(winnersData, teamInitial) {
     /* code here */
-    const initialCountry = data.filter (initial => initial['Home Team Initials'] === teamInitial)
-    .reduce ((acc, curVal)=> acc + curVal['Home Team Initials'])
-return initialCountry;
-}
-console.log('Stretch 1:', getCountryWins(fifaData, 'ARG'));
+    // const initialCountry = winnersData.filter (initial => initial['Home Team Initials'] === teamInitial)
 
+    const mostWin = winnersData.filter(info => info.Stage === 'Final' && (info['Home Team Initials'] === teamInitial || info['Away Team Initials'] === teamInitial));
+
+    const homeTeamWon = mostWin.filter(info => info['Home Team Initials'] === teamInitial && info['Home Team Goals'] > info['Away Team Goals']);
+
+    const awayTeamWon = mostWin.filter(info => info['Away Team Initials'] === teamInitial && info['Home Team Goals'] < info['Away Team Goals']);
+
+    const teamName = homeTeamWon.length > 0 ? homeTeamWon[0]['Home Team Name'] : awayTeamWon[0]['Away Team Name'];
+
+
+    return (`${teamName} has won ${homeTeamWon.length + awayTeamWon.length} world cup so far.`);
+    // return mostWin;
+}
+console.log('Stretch 1:', getCountryWins(fifaData, 'BRA'));
 
 /* 💪💪💪💪💪 Stretch 2: 💪💪💪💪💪 
 Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals(/* code here */) {
-
+function getGoals(data) {
     /* code here */
 
 }
+
+getGoals(fifaData);
 
 
 /* 💪💪💪💪💪 Stretch 3: 💪💪💪💪💪
